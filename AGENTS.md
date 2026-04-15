@@ -1,0 +1,2 @@
+- always update the .env.example file if necessary
+- commit multiple commits if it makes sense
