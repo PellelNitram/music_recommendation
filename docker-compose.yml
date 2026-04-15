@@ -1,0 +1,14 @@
+services:
+  navidrome:
+    image: deluan/navidrome:${ND_IMAGE_TAG}
+    ports:
+      - "${ND_PORT}:4533"
+    environment:
+      ND_SCANSCHEDULE: ${ND_SCANSCHEDULE}
+      ND_LOGLEVEL: ${ND_LOGLEVEL}
+      ND_SESSIONTIMEOUT: ${ND_SESSIONTIMEOUT}
+      ND_BASEURL: ${ND_BASEURL}
+    volumes:
+      - ${ND_DATA_FOLDER}:/data
+      - ${ND_MUSIC_FOLDER}:/music:ro
+    restart: unless-stopped
