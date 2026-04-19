@@ -15,9 +15,15 @@ Without a shared key, matching recommended tracks to local library entries requi
 
 ## Decision
 
-Use MBIDs as the shared key. Music files will be tagged with MBIDs using [MusicBrainz Picard](https://picard.musicbrainz.org/) (via audio fingerprinting / AcoustID) as a one-time setup step. After reindexing, Navidrome stores the MBID in the `mbz_recording_id` column of its SQLite database, making lookups straightforward.
+Use MBIDs as the shared key. Music files will be tagged with MBIDs using [MusicBrainz Picard](https://picard.musicbrainz.org/) (via audio fingerprinting / AcoustID) as a one-time setup step. Picard writes the MBID into the `MUSICBRAINZ_TRACKID` / `musicbrainz_recordingid` tag field.
 
-Fuzzy `(artist, title)` matching is retained as a fallback for files that Picard cannot match.
+After reindexing, Navidrome surfaces the MBID in two ways:
+- **Subsonic API** — `getMusicDirectory` / `search3` responses include an `mbid` field when available
+- **SQLite DB** — the `media_file` table in `navidrome.db` has a `mbz_recording_id` column
+
+For playlist generation, the lookup goes: MBID → `mbz_recording_id` in `navidrome.db` → Navidrome internal ID → `createPlaylist` via Subsonic API.
+
+Fuzzy `(artist, title)` matching is retained as a fallback for files that Picard cannot match, using `artist_name` / `track_name` from ListenBrainz listen data against Navidrome's indexed metadata.
 
 ## Alternatives Considered
 
