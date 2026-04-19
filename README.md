@@ -4,7 +4,7 @@ A lean, self-hosted music discovery system built on top of [Navidrome](https://w
 
 ## What it does
 
-Generates daily personalized playlists in Navidrome by running a recommender system trained on your ListenBrainz scrobbling history. Recommendations are a mix of tracks you haven't heard yet (discovery) and tracks worth revisiting.
+Generates daily personalized playlists in Navidrome using a recommender system trained on the entire ListenBrainz community's listening data. Your personal ListenBrainz scrobbles are used as input to query the model for personalized suggestions. Recommendations are a mix of tracks you haven't heard yet (discovery) and tracks worth revisiting.
 
 Playlists are created once per day (at night) with names like `Recommended for you - 2026-03-19`.
 
@@ -13,7 +13,8 @@ Tracks recommended by the model that aren't in your local library are written to
 ## Architecture
 
 ```
-ListenBrainz API  --(scrobbles + recs)-->  Recommender Model
+ListenBrainz community data  --(training)-->  Recommender Model
+Your ListenBrainz scrobbles  --(query)---->
                                                   |
                                                (MBIDs)
                                                   |
