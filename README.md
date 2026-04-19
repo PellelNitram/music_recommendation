@@ -26,13 +26,7 @@ Your ListenBrainz scrobbles  --(query)---->
                                  (createPlaylist)    (tracks not in library)
 ```
 
-**MusicBrainz Recording IDs (MBIDs)** are the shared key between ListenBrainz and Navidrome. Navidrome stores them in the `mbz_recording_id` column of its SQLite database when files are tagged.
-
-## Setup prerequisites
-
-1. **Tag your music library with MusicBrainz Picard** — run it once over your library to embed MBIDs via audio fingerprinting (AcoustID). This is a one-time automated step.
-2. **Rescan Navidrome** after tagging so MBIDs are indexed in the database.
-3. **Enable ListenBrainz scrobbling** in Navidrome so your listening history is available for training.
+MusicBrainz Recording IDs (MBIDs) are used as the shared key between ListenBrainz and Navidrome — see [ADR 001](docs/adr/001-mbid-as-shared-key.md) for the rationale and alternatives. Setup prerequisites (Picard tagging, Navidrome rescanning, scrobbling config) will be documented in `docs/setup.md` once validated.
 
 ## Scope
 
