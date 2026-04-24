@@ -2,8 +2,9 @@ include .env
 export
 
 IA_BASE_URL = https://archive.org/download
+LB_FTP_BASE_URL = https://ftp.musicbrainz.org/pub/musicbrainz/listenbrainz/incremental
 
-.PHONY: up down restart logs status download-songs create-playlist
+.PHONY: up down restart logs status download-songs download-listens create-playlist
 
 up:
 	@mkdir -p $(ND_DATA_FOLDER) $(ND_MUSIC_FOLDER)
@@ -39,6 +40,24 @@ download-songs:
 	@curl -L -o "$(ND_MUSIC_FOLDER)/RidingAlone/Love_Song.mp3" \
 		"$(IA_BASE_URL)/badpanda018/04RidingAloneForThousandsOfMiles-LoveSong.mp3"
 	@echo "Done! Downloaded 7 songs to $(ND_MUSIC_FOLDER)"
+
+define download-and-extract
+	@mkdir -p $(LB_DATA_FOLDER)/$(1)
+	@echo "Downloading listenbrainz-listens-dump-$(1)-$(2)-incremental.tar.zst..."
+	@curl -L -o "$(LB_DATA_FOLDER)/listenbrainz-listens-dump-$(1)-$(2)-incremental.tar.zst" \
+		"$(LB_FTP_BASE_URL)/listenbrainz-dump-$(1)-$(2)-incremental/listenbrainz-listens-dump-$(1)-$(2)-incremental.tar.zst"
+	@echo "Extracting to $(LB_DATA_FOLDER)/$(1)/..."
+	@zstd -d "$(LB_DATA_FOLDER)/listenbrainz-listens-dump-$(1)-$(2)-incremental.tar.zst" --stdout | \
+		tar xf - -C "$(LB_DATA_FOLDER)/$(1)/" --strip-components=1
+	@rm "$(LB_DATA_FOLDER)/listenbrainz-listens-dump-$(1)-$(2)-incremental.tar.zst"
+endef
+
+download-listens:
+	@echo "Downloading 3 days of incremental ListenBrainz listen data..."
+	$(call download-and-extract,2500,20260421-000004)
+	$(call download-and-extract,2501,20260422-000004)
+	$(call download-and-extract,2502,20260423-000004)
+	@echo "Done! Extracted listen data to $(LB_DATA_FOLDER)/{2500,2501,2502}/"
 
 create-playlist:
 	@./scripts/create-playlist.sh
