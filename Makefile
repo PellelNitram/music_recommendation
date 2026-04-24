@@ -4,7 +4,7 @@ export
 IA_BASE_URL = https://archive.org/download
 LB_FTP_BASE_URL = https://ftp.musicbrainz.org/pub/musicbrainz/listenbrainz/incremental
 
-.PHONY: up down restart logs status download-songs download-listens clean-listens test test-all create-playlist
+.PHONY: up down restart logs status download-songs download-listens clean-listens test test-all notebook create-playlist
 
 up:
 	@mkdir -p $(ND_DATA_FOLDER) $(ND_MUSIC_FOLDER)
@@ -66,6 +66,9 @@ test:
 
 test-all:
 	uv run pytest -m ""
+
+notebook:
+	uv run jupyter notebook notebooks/
 
 create-playlist:
 	@./scripts/create-playlist.sh
