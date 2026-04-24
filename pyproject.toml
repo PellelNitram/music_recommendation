@@ -13,3 +13,12 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/music_recommendation"]
+
+[tool.pytest.ini_options]
+markers = ["integration: tests that require downloaded data (deselect with '-m \"not integration\"')"]
+addopts = "-m 'not integration'"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]

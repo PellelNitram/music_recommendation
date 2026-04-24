@@ -4,7 +4,7 @@ export
 IA_BASE_URL = https://archive.org/download
 LB_FTP_BASE_URL = https://ftp.musicbrainz.org/pub/musicbrainz/listenbrainz/incremental
 
-.PHONY: up down restart logs status download-songs download-listens clean-listens create-playlist
+.PHONY: up down restart logs status download-songs download-listens clean-listens test test-all create-playlist
 
 up:
 	@mkdir -p $(ND_DATA_FOLDER) $(ND_MUSIC_FOLDER)
@@ -60,6 +60,12 @@ download-listens:
 
 clean-listens:
 	rm -rf $(LB_DATA_FOLDER)
+
+test:
+	uv run pytest
+
+test-all:
+	uv run pytest -m ""
 
 create-playlist:
 	@./scripts/create-playlist.sh
