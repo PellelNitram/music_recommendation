@@ -1,3 +1,6 @@
 - always update the .env.example file if necessary
 - commit multiple commits if it makes sense
 - when being instructed to work on issues, then use `gh` and look at the text and all comments of the issue
+- we use uv to manage the python environment
+- we use pytest for tests
+- let's write tests for new code
